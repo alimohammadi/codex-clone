@@ -25,7 +25,8 @@ pnpm-lock.yaml
 .git/
 .gitignore
 
-# Environment variables
+# Environment variables (all levels)
+**/.env
 .env
 .env.*
 !.env.example
