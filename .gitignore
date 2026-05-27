@@ -17,9 +17,11 @@ pod/
 .bundle/
 __pycache__/
 .python-version/
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
+
+# Lock files
+**/package-lock.json
+**/yarn.lock
+**/pnpm-lock.yaml
 
 # Git
 .git/
