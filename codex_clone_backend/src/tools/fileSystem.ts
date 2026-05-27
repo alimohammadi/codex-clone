@@ -4,10 +4,7 @@ import fs from "fs/promises";
 import path from "path";
 import { glob } from "glob";
 
-export const WORKING_DIR = path.resolve(
-  process.cwd(),
-  "public/working-dir/human-in-loop",
-);
+export const WORKING_DIR = path.resolve(process.cwd(), "public/working-dir");
 
 const IGNORED_DIRS = [
   "node_modules",
@@ -91,7 +88,7 @@ export const writeFileTool = tool(
 
       return `Successfully wrote to ${file_path} (${lineCount} lines).`;
     } catch (err: unknown) {
-      return `Error writting file: ${err instanceof Error ? err.message : "Unknown error"}`;
+      return `Error writing file: ${err instanceof Error ? err.message : "Unknown error"}`;
     }
   },
   {
@@ -305,7 +302,7 @@ export const searchFileTool = tool(
       });
 
       const flags = case_sensitive ? "" : "i";
-      const regex = new RegExp(query, `g${flags}`);
+      const regex = new RegExp(query, flags);
       const results = [];
 
       for (const file of files) {
@@ -316,16 +313,12 @@ export const searchFileTool = tool(
 
         lines.forEach((line, index) => {
           if (regex.test(line)) {
-            results.push(`${file}:${index + 1}: ${line.trim()}`);
+            matches.push(`${file}:${index + 1}: ${line.trim()}`);
           }
         });
 
         if (matches.length > 0) {
-          results.push(
-            `Found ${matches.length} matches in ${file}:\n${matches
-              .map((m) => `  ${m}`)
-              .join("\n")}`,
-          );
+          results.push(...matches);
         }
       }
 
@@ -368,3 +361,9 @@ export const fileSystemTools = [
   lsTool,
   searchFileTool,
 ];
+
+// async function main() {
+//   const res = await fileTreeTool?.invoke({ directory: "src" });
+//   console.log(res);
+// }
+// main();
